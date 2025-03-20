@@ -7,15 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Home\" />
-    <Folder Include="Views\Shared\" />
-    <Folder Include="wwwroot\Images\" />
-    <Folder Include="wwwroot\CSS\" />
-    <Folder Include="wwwroot\HTML\" />
-    <Folder Include="wwwroot\JS\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.3" />
     <PackageReference Include="Stripe.net" Version="47.4.0" />
   </ItemGroup>
