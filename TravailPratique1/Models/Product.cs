@@ -1,6 +1,6 @@
 ﻿namespace TravailPratique1.Models
 {
-    public class Products
+    public class Product
     {
         public int productId { get; set; }
         public string title { get; set; }
