@@ -10,10 +10,11 @@ namespace TravailPratique1
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddMvc(option => option.EnableEndpointRouting = false);
             var app = builder.Build();
+            app.UseFileServer();
 
             // Préparation Stripe
-            builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
-            StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
+            //builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+            //StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
 
             // Création routes
             app.UseMvc(routes =>
@@ -22,7 +23,7 @@ namespace TravailPratique1
                     "Default",
                     "{controller=Home}/{Action=Index}");
             });
-
+            
             app.Run();
         }
     }
