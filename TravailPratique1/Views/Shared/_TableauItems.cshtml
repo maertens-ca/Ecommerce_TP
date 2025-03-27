@@ -1,0 +1,67 @@
+﻿<div class="container">
+    <div class="row">
+        <div class="col-md-6 mx-auto text-center  p-3">
+            <h1>Commandes</h1>
+            <Table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Produits commandés</th>
+                        <th scope="col">Montant</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Ici on créera des lignes de tableau pour chaque entrée trouvée dans la base de données-->
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>2025-03-27</td>
+                        <!-- Pour les produits commandés, n'afficher qu'un ou deux produits pour garder le tableau compact-->
+                        <td>Chandail rouge</td>
+                        <td>530,92$</td>
+                        <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#TestModal">Afficher</button></td>
+                        <!-- Fenêtre modale qui serait générée selon l'id de la commande qui affiche plus de détails sur la commande-->
+
+                    </tr>
+                </tbody>
+            </Table>
+            <!--Fenêtre modale prototype montrant les informations plus détaillées d'une commande-->
+            <div class="modal fade" id="TestModal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Commande #</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                        </div>
+                        <div class="modal-body">
+                            <h2>Date: 2025-03-27</h2>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Nom produit</th>
+                                        <th scope="col">Quantité</th>
+                                        <th scope="col">Coût unitaire</th>
+                                        <th scope="col">Coût total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">Chandail rouge</th>
+                                        <td>2</td>
+                                        <td>20$</td>
+                                        <td>40$</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h2>TOTAL: 40$</h2>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
