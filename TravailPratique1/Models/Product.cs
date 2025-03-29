@@ -22,6 +22,5 @@ namespace TravailPratique1.Models
         public int vendeurId { get; set; } // Clé étrangère
         [ForeignKey("vendeurId")]
         public Vendeur vendeur { get; set; }
-
     }
 }

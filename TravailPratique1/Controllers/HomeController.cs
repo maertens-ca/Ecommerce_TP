@@ -9,6 +9,11 @@ namespace TravailPratique1.Controllers
             return View();
         }
 
+        public IActionResult Catalogue() 
+        { 
+            return View(); 
+        } 
+
         public IActionResult Inscription()
         {
             return View();
