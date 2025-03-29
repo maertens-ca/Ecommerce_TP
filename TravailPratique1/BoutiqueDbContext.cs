@@ -7,8 +7,11 @@ namespace TravailPratique1
         //Creer les tables: seance 05 page 18
         public DbSet<Models.Product> Clients { get; set; }
         public DbSet<Models.User> Users { get; set; }
-
-
+        public DbSet<Models.Commande> Commandes { get; set; }
+        public DbSet<Models.Facture> Factures { get; set; }
+        public DbSet<Models.ProduitCommande> ProduitCommandes { get; set; }
+        public DbSet<Models.Vendeur> Vendeurs { get; set; }
+        public DbSet<Models.Product> Products { get; set; }
 
         //Connexion a la base de donnees
         protected override void OnConfiguring(DbContextOptionsBuilder dbContextOptionsBuilder)

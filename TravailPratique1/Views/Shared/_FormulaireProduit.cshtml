@@ -1,0 +1,41 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@model TravailPratique1.Models.Product
+
+<form asp-action=@ViewBag.Action method="post">
+	<div class="form-floating mb-3">
+		<input type="text" asp-for="title" class="form-control" id="NomProduit" placeholder="Item">
+		<label for="NomProduit" >Nom du produit</label>
+		<span asp-validation-for="title" class="text-danger"></span>
+	</div>
+	<div class="form-floating mb-3">
+		<textarea class="form-control" asp-for="description" id="Description" placeholder="Description" style="height: 160px"></textarea>
+		<label for="Description" >Description</label>
+		<span asp-validation-for="description" class="text-danger"></span>
+	</div>
+	<div class="form-floating mb-3">
+		<input type="text" asp-for="category" class="form-control" id="Categorie" placeholder="Categorie">
+		<label for="Categorie">Catégorie</label>
+		<span asp-validation-for="category" class="text-danger"></span>
+	</div>
+	<div class="form-floating mb-3">
+		<input type="number" asp-for="price" class="form-control" id="Prix" placeholder="0,00" style="width: 40%">
+		<label for="Prix">Prix ($)</label>
+		<span asp-validation-for="price" class="text-danger"></span>
+	</div>
+	<div class="mb-3" style="text-align:left">
+		<label for="imageProduit" class="form-label">Image du produit</label>
+		<input class="form-control" asp-for="imageUrl" type="file" id="imageProduit">
+		<span asp-validation-for="imageUrl" class="text-danger"></span>
+	</div>
+	<button class="btn btn-primary" type="submit">
+		@if (ViewBag.Action == "Add")
+		{
+			<text>Ajouter</text>
+		}
+		else
+		{
+			<text>Modifier</text>
+		}
+	</button>
+</form>

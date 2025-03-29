@@ -7,13 +7,16 @@ namespace TravailPratique1.Models
     {
         [Key]
         public int productId { get; set; }
+        [Required(ErrorMessage ="Champ requis!")]
         public string title { get; set; }
-        public double price { get; set; }
-        public string description { get; set; }
-        public string category { get; set; }
-        public string imageUrl { get; set; }
-        public double rate { get; set; }
-        public int count { get; set; }
+		[Required(ErrorMessage = "Champ requis!")]
+		public double price { get; set; }
+		[Required(ErrorMessage = "Champ requis!")]
+		public string description { get; set; }
+		[Required(ErrorMessage = "Champ requis!")]
+		public string category { get; set; }
+		[Required(ErrorMessage = "Champ requis!")]
+		public string imageUrl { get; set; }
         // Relation Plusieurs-à-Plusieurs (Produits -> Commandes) avec table de jonction
         public ICollection<ProduitCommande> produitCommandes { get; set; } = new List<ProduitCommande>();
         public int vendeurId { get; set; } // Clé étrangère
