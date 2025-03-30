@@ -10,7 +10,7 @@ namespace TravailPratique1
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddMvc(option => option.EnableEndpointRouting = false);
             var app = builder.Build();
-            app.UseFileServer();
+            
 
             // Préparation Stripe
             //builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
@@ -23,7 +23,8 @@ namespace TravailPratique1
                     "Default",
                     "{controller=Home}/{Action=Index}");
             });
-            
+
+            app.UseFileServer();
             app.Run();
         }
     }

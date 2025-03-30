@@ -72,6 +72,7 @@ namespace TravailPratique1.Controllers
         }
         public IActionResult Authentification()
         {
+           
             return View();
         }
         public IActionResult Commandes()
