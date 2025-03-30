@@ -8,11 +8,9 @@ namespace TravailPratique1.Models
         [Key]
         public int clientProduitId { get; set; }
         public int quantité { get; set; } // qt. d'un produit dans le panier d'un client
-        public int clientId { get; set; }
-        [ForeignKey("clientId")]
+        public int userId { get; set; }
         public Client client { get; set; }
-        public int produitId { get; set; }
-        [ForeignKey("productId")]
+        public int productId { get; set; }
         public Product product { get; set; }
     }
 }

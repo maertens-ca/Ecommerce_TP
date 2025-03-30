@@ -9,10 +9,10 @@ namespace TravailPratique1.Models
         public int produitCommandeId { get; set; }
         public int quantité { get; set; } // Quantité de produits dans commande
         public int commandeId { get; set; }
-        [ForeignKey("commandeId")]
+        //[ForeignKey("commandeId")]
         public Commande commande { get; set; }
-        public int produitId { get; set; }
-        [ForeignKey("productId")]
+        public int productId { get; set; }
+        //[ForeignKey("productId")]
         public Product product { get; set; }
     }
 }

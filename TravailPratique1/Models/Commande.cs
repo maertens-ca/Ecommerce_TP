@@ -10,8 +10,7 @@ namespace TravailPratique1.Models
         public string date { get; set; } // formattée en string lors de l'initialisation avec DateTime.Now.ToString("yyyy-MM-dd")
         // Relation Plusieurs-À-Plusieurs (Commandes -> Produits)
         public ICollection<ProduitCommande> produitCommandes { get; set; } = new List<ProduitCommande>();
-        public int userId { get; set; } // clé étrangère (Seul client peut faire des commandes)
-        [ForeignKey("userId")]
+        public int clientId { get; set; } // clé étrangère (Seul client peut faire des commandes)
         public Client client { get; set; }
         public int factureId { get; set; } // clé étrangère
         [ForeignKey("factureId")]

@@ -22,7 +22,69 @@ namespace TravailPratique1
             dbContextOptionsBuilder.UseSqlServer($"{ConnectionString};Database={DatabaseName};");
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Annuler le comportement de supprimer par cascade pour les classes suivantes:
+            // ClientProduit (Client et product)
+            modelBuilder.Entity<Models.ClientProduit>()
+                .HasOne(cp => cp.client)
+                .WithMany(client => client.clientProduits)
+                .HasForeignKey(cp => cp.userId)
+                .OnDelete(DeleteBehavior.Restrict);
+            
+            modelBuilder.Entity<Models.ClientProduit>()
+                .HasOne(cp => cp.product)
+                .WithMany(p => p.clientProduits)
+                .HasForeignKey(cp => cp.productId)
+                .OnDelete(DeleteBehavior.Restrict);
 
+            //Facture (Client, Vendeur et Commande)
+            modelBuilder.Entity<Models.Facture>()
+                .HasOne(f => f.client)
+                .WithMany(client => client.factures)
+                .HasForeignKey(f => f.clientId)
+                .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Models.Facture>()
+                .HasOne(f => f.vendeur)
+                .WithMany(vendeur => vendeur.factures)
+                .HasForeignKey(f => f.vendeurId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Models.Facture>()
+                .HasOne(f => f.commande)
+                .WithMany()
+                .HasForeignKey(f => f.commandeId)
+                .OnDelete(DeleteBehavior.Restrict);
+            
+            
+            // ProduitCommande (Product et Commande)
+            modelBuilder.Entity<Models.ProduitCommande>()
+                .HasOne(pc => pc.product)
+                .WithMany(prod => prod.produitCommandes)
+                .HasForeignKey(pc => pc.productId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Models.ProduitCommande>()
+                .HasOne(pc => pc.commande)
+                .WithMany(com => com.produitCommandes)
+                .HasForeignKey(pc => pc.commandeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Commande (Client et facture)
+            /*
+            modelBuilder.Entity<Models.Commande>()
+                .HasOne(c => c.client)
+                .WithMany()
+                .HasForeignKey(c =>c.clientId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Models.Commande>()
+                .HasOne(c => c.facture)
+                .WithMany()
+                .HasForeignKey(c => c.factureId)
+                .OnDelete(DeleteBehavior.Restrict);
+            */
+        }
     }
 }

@@ -6,25 +6,6 @@ namespace TravailPratique1.Controllers
     public class HomeController : Controller
     {
         private readonly BoutiqueDbContext _DbContext;
-        List<Product> testproducts = new List<Product>
-            {
-                new Product{
-                    productId = 1,
-                    title = "Chandail",
-                    price = 25.20,
-                    description = "Beau chandail",
-                    category = "Vêtements",
-                    imageUrl = "Non"
-                },
-                new Product{
-                    productId = 2,
-                    title = "Pantalons",
-                    price = 150,
-                    description = "Pantalons dégueu",
-                    category = "Vêtements",
-                    imageUrl = "Non"
-                }
-            };
         public IActionResult Index()
         {
             return View();
@@ -32,9 +13,8 @@ namespace TravailPratique1.Controllers
 
         public IActionResult Catalogue() 
         {
-            //List<Product> products = _DbContext.Products.ToList();
-            //return View(products);
-            return View(testproducts);
+            List<Product> products = _DbContext.Products.ToList();
+            return View(products);
         }
 
         public IActionResult FiltreCatalogue() 
