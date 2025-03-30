@@ -10,6 +10,7 @@ namespace TravailPratique1
         public DbSet<Models.Commande> Commandes { get; set; }
         public DbSet<Models.Facture> Factures { get; set; }
         public DbSet<Models.ProduitCommande> ProduitCommandes { get; set; }
+        public DbSet<Models.ClientProduit> ClientProduits { get; set; }
         public DbSet<Models.Vendeur> Vendeurs { get; set; }
         public DbSet<Models.Product> Products { get; set; }
 

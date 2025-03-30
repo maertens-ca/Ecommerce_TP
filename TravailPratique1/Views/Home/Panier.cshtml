@@ -10,18 +10,27 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-6 mx-auto text-center  p-3">
+        <div class="col-md-6 mx-auto text-center p-3">
             <h1>Panier</h1>
-            <div class="container">
-                <div class="row">
-                    <div class="col-8">
-                        Produits
-                    </div>
-                    <div class="col-4">
-                        Prix
-                    </div>
-                </div>
-            </div>
+            <Table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Produit</th>
+                        <th scope="col">Quantité</th>
+                        <th scope="col">Prix unitaire</th>
+                        <th scope="col">Prix total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Ici on créera des lignes de tableau pour chaque entrée trouvée dans la base de données-->
+                    <tr>
+                        <th scope="row">Chandail rouge</th>
+                        <td>1</td>
+                        <td>20$</td>
+                        <td>20$</td>
+                    </tr>
+                </tbody>
+            </Table>
             <button class="btn btn-success">Passer au paiement</button>
         </div>
     </div>

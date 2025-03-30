@@ -19,6 +19,8 @@ namespace TravailPratique1.Models
 		public string imageUrl { get; set; }
         // Relation Plusieurs-à-Plusieurs (Produits -> Commandes) avec table de jonction
         public ICollection<ProduitCommande> produitCommandes { get; set; } = new List<ProduitCommande>();
+        // Relation Plusieurs-à-Plusieurs (Produits -> Client) avec table de jonction (utilisée pour populer panier de client)
+        public ICollection<ClientProduit> clientProduits { get; set; } = new List<ClientProduit>();
         public int vendeurId { get; set; } // Clé étrangère
         [ForeignKey("vendeurId")]
         public Vendeur vendeur { get; set; }

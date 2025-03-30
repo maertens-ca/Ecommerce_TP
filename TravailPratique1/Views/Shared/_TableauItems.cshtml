@@ -22,17 +22,16 @@
                         <td>530,92$</td>
                         <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#TestModal">Afficher</button></td>
                         <!-- Fenêtre modale qui serait générée selon l'id de la commande qui affiche plus de détails sur la commande-->
-
                     </tr>
                 </tbody>
             </Table>
             <!--Fenêtre modale prototype montrant les informations plus détaillées d'une commande-->
-            <div class="modal fade" id="TestModal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal fade" id="TestModal" data-bs-keyboard="false" tabindex="-1">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="staticBackdropLabel">Commande #</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                         <div class="modal-body">
                             <h2>Date: 2025-03-27</h2>
@@ -46,6 +45,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <!--Loop ici pour trouver tous les ProduitCommande-->
                                     <tr>
                                         <th scope="row">Chandail rouge</th>
                                         <td>2</td>
