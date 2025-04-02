@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using TravailPratique1;
 namespace TravailPratique1;
+
+
 [Route("api/account")]
 [ApiController]
 public class AccountController : ControllerBase
