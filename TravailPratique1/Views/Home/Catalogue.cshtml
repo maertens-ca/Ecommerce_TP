@@ -47,7 +47,7 @@
             {
                 <div class="col-4">
                     <div class="card px-1 py-3">
-                        <a href="/Product/Details/@product.productId"><img style="width:90%; height:90%; display:block; margin:auto;" class="card-img-top rounded-3" src="~/Images/chat.png" /></a>
+                        <a href="/Product/Details/@product.productId"><img style="width:90%; height:90%; display:block; margin:auto;" class="card-img-top rounded-3" src=@product.imageUrl/></a>
                         <br />
                         <div class="card-body" style="padding-top:0px">
                             <div class="container">
@@ -59,7 +59,7 @@
                                     </div>
                                     <div class="col-5 text-center">
                                         <button type="button" style="margin-bottom:10px;" onclick="location.href='/Product/Details/@product.productId'" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i> Détails</button>
-                                        <button class="btn btn-success"><i class="fa-solid fa-cart-shopping"></i> Ajouter</button>
+                                        <button onclick="AjouterAuPanier(@product.productId)" class="btn btn-success"><i class="fa-solid fa-cart-shopping"></i> Ajouter</button>
                                     </div>
                                 </div>
                             </div>
@@ -70,3 +70,20 @@
         </div>
     </div>
 </div>
+
+<script>
+    function AjouterAuPanier(productID)
+    {
+        $.ajax({
+            url: "/AjouterAuPanier",
+            type: "POST",
+            data: { productId: productID, quantity: 1},
+            success: function(reponse){
+                alert("Article ajouté au panier!"); // Ajouté au panier
+            },
+            error: function(){
+                alert("Erreur lors d'ajout au panier");
+            }
+        })
+    }
+</script>

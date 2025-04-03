@@ -5,12 +5,32 @@
 @{
 	Layout = "_Layout";
 }
+@using TravailPratique1.Models
+@model List<Product>
 
 <div class="container">
-    <div class="row">
-        <div class="col-md-6 mx-auto text-center  p-3">
-            <h1>Produits</h1>
-
-        </div>
-    </div>
+    <h1> Produits </h1>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col">Nom produit</th>
+				<th scope="col">Catégorie</th>
+				<th scope="col">Prix</th>
+				<th scope="col"></th>
+				<th scope="col"></th>
+			</tr>
+		</thead>
+			<tbody>
+			@foreach (var product in Model)
+			{
+				<tr>
+					<th scope="row"><a href="/Product/Details/@product.productId">@product.title</a></th>
+					<td>@product.category</td>
+					<td>@product.price $</td>
+					<td><button type="button" onclick="location.href='/Product/Details/@product.productId'"class="btn btn-warning">Modifier</button></td>
+					<td><button type="button" onclick="location.href='/Product/Remove/@product.productId'"class="btn btn-danger">Supprimer</button></td>
+				</tr>
+			}
+			</tbody>
+	</table>
 </div>

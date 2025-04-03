@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using TravailPratique1.Models;
 
 namespace TravailPratique1.Controllers
@@ -6,15 +7,31 @@ namespace TravailPratique1.Controllers
     public class HomeController : Controller
     {
         private readonly BoutiqueDbContext _DbContext;
-        public IActionResult Index()
+		private readonly UserManager<User> _userManager;
+
+		public HomeController(BoutiqueDbContext dbContext, UserManager<User> userManager)
+        {
+            _DbContext = dbContext;
+            _userManager = userManager;
+        }
+		public string? GetCurrentUserId()
+		{
+			return User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+		}
+		public IActionResult Index()
         {
             return View();
         }
 
         public IActionResult Catalogue() 
         {
-            List<Product> products = _DbContext.Products.ToList();
-            return View(products);
+            bool isProducts = _DbContext.Products.Any();
+            if (isProducts != false) 
+            {
+                return View(_DbContext.Products.ToList());
+            }
+            ViewBag.AucunProduit = "Aucun produit trouvé!";
+            return View();
         }
 
         public IActionResult FiltreCatalogue() 
@@ -38,6 +55,13 @@ namespace TravailPratique1.Controllers
             {
                 prixMaximum = 9999999999;
             }
+            bool isProducts = _DbContext.Products.Any();
+            if (isProducts == true) 
+            {
+                ViewBag.AucunProduit = "Aucun produit trouvé!";
+                return View();
+            }
+
             var products = _DbContext.Products.Where(product => product.price >= prixMinimum).Where(product => product.price <= prixMaximum);
             if (categorie != null || categorie != "") 
             {
@@ -73,7 +97,21 @@ namespace TravailPratique1.Controllers
         }
         public IActionResult Panier()
         {
-            return View();
+            var Id = GetCurrentUserId();
+			if (Id == null)
+			{
+				return Unauthorized();
+			}
+			var client = _DbContext.Users.Find(Id);
+			if (client == null)
+			{
+				return NotFound();
+			}
+			if (client.GetType() != typeof(Client))
+			{
+				return Unauthorized();
+			}
+			return View();
         }
         public IActionResult Produits()
         {

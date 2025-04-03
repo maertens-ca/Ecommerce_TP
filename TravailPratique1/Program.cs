@@ -22,9 +22,6 @@ namespace TravailPratique1
             builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
             StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
 
-            
-
-
             // Configure EF Core
             builder.Services.AddDbContext<BoutiqueDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

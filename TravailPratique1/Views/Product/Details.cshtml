@@ -10,10 +10,15 @@
 <div class="container">
     <div class="row">
         <div class="col-6">
-            <img class="rounded-4" src="~/Images/chat.png" />
+            <img class="rounded-4" src=@Model.imageUrl />
         </div>
         <div class="col-6">
-
+            <ul>
+                <li>Vendu par: @Model.vendeur</li>
+                <li>Catégorie: @Model.category</li>
+                <li>Prix: @Model.price $</li>
+            </ul>
+            <p class="fw-medium">@Model.description</p>
         </div>
     </div>
 </div>
