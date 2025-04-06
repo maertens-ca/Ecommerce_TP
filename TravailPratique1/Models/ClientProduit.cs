@@ -8,7 +8,7 @@ namespace TravailPratique1.Models
         [Key]
         public int clientProduitId { get; set; }
         public int quantité { get; set; } // qt. d'un produit dans le panier d'un client
-        public int userId { get; set; }
+        public int Id { get; set; }
         public Client client { get; set; }
         public int productId { get; set; }
         public Product product { get; set; }

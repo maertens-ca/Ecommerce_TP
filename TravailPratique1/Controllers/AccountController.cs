@@ -23,7 +23,7 @@ public class AccountController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] Models.User model)
     {
-        var user = new Models.User { UserName = model.email, Email = model.Email, username = model.username };
+        var user = new Models.User { UserName = model.UserName, Email = model.Email};
         var result = await _userManager.CreateAsync(user, model.password);
 
         if (result.Succeeded)

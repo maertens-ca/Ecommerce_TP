@@ -14,10 +14,20 @@ namespace TravailPratique1.Controllers
             _DbContext = dbContext;
             _userManager = userManager;
         }
-		public string? GetCurrentUserId()
+		public User? GetCurrentUser()
 		{
-			return User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-		}
+            var Id = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (Id == null) 
+            {
+                return null;
+            }
+            User? user = _DbContext.Users.Find(Id);
+            if (user == null) 
+            {
+                return null;
+            }
+            return user;
+        }
 		public IActionResult Index()
         {
             return View();
@@ -58,7 +68,7 @@ namespace TravailPratique1.Controllers
             bool isProducts = _DbContext.Products.Any();
             if (isProducts == true) 
             {
-                ViewBag.AucunProduit = "Aucun produit trouvé!";
+                ViewBag.AucunProduit = "Aucun produit existant!";
                 return View();
             }
 
@@ -66,6 +76,11 @@ namespace TravailPratique1.Controllers
             if (categorie != null || categorie != "") 
             {
                 products = products.Where(product => product.category == categorie);
+            }
+            if (products.Count() == 0) 
+            {
+                ViewBag.AucunProduit = "Aucun produit trouvé pour ces filtres!";
+                return View();
             }
             return View("Catalogue", products.ToList());
         }
@@ -81,7 +96,22 @@ namespace TravailPratique1.Controllers
         }
         public IActionResult Commandes()
         {
-            return View();
+            User? user = GetCurrentUser();
+            if (user == null) 
+            {
+                return Unauthorized();
+            }
+            if (user.GetType() != typeof(Client)) 
+            {
+                return Unauthorized();
+            }
+            Client client = (Client)user;
+            if (client.factures.Count() == 0) 
+            {
+                ViewBag.AucuneCommande = "Aucune commande en lien avec vous!";
+                return View();
+            }
+            return View(client.commandes); // Afficher commandes du client
         }
         public IActionResult Erreur404()
         {
@@ -89,7 +119,33 @@ namespace TravailPratique1.Controllers
         }
         public IActionResult Factures()
         {
-            return View();
+            User? user = GetCurrentUser();
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+            if (user.GetType() == typeof(Vendeur))
+            {
+                Vendeur vendeur = (Vendeur)user;
+                // Retourner liste de factures dédiées au vendeur
+                if (vendeur.factures.Count == 0) 
+                {
+                    ViewBag.AucuneFacture = "Aucune facture dédiée à vous!";
+                    return View(); // Sans modèle de facture
+                }
+                return View(vendeur.factures);
+            }
+            else // Type client
+            {
+                Client client = (Client)user;
+                // Retourner liste de factures dédiées au client
+                if (client.factures.Count == 0)
+                {
+                    ViewBag.AucuneFacture = "Aucune facture dédiée à vous!";
+                    return View(); // Sans modèle de facture
+                }
+                return View(client.factures);
+            }
         }
         public IActionResult Paiement()
         {
@@ -97,20 +153,16 @@ namespace TravailPratique1.Controllers
         }
         public IActionResult Panier()
         {
-            var Id = GetCurrentUserId();
-			if (Id == null)
+            User? user = GetCurrentUser();
+            if (user == null) 
+            {
+                return Unauthorized();
+            }
+			if (user.GetType() != typeof(Client))
 			{
 				return Unauthorized();
 			}
-			var client = _DbContext.Users.Find(Id);
-			if (client == null)
-			{
-				return NotFound();
-			}
-			if (client.GetType() != typeof(Client))
-			{
-				return Unauthorized();
-			}
+            // Get liste de ClientProduit du client
 			return View();
         }
         public IActionResult Produits()

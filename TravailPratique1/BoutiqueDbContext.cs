@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using TravailPratique1.Models;
 
 namespace TravailPratique1
 {
-    public class BoutiqueDbContext : IdentityDbContext<Models.User>
+    // Le type int fait en sorte que la clé primaire de IdentityUser soit un int au lieu d'un string
+    public class BoutiqueDbContext : IdentityDbContext<Models.User, UserRole, int>
     {
         //Creer les tables: seance 05 page 18
         public DbSet<Models.Product> Clients { get; set; }
@@ -36,7 +38,7 @@ namespace TravailPratique1
             modelBuilder.Entity<Models.ClientProduit>()
                 .HasOne(cp => cp.client)
                 .WithMany(client => client.clientProduits)
-                .HasForeignKey(cp => cp.userId)
+                .HasForeignKey(cp => cp.Id)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Models.ClientProduit>()

@@ -14,23 +14,27 @@ namespace TravailPratique1.Controllers
             _DbContext = dbContext;
             _userManager = userManager;
         }
-        public string? GetCurrentUserId() 
-        { 
-            var Id =  User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-            return Id;
-		}
+        public User? GetCurrentUser()
+        {
+            var Id = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (Id == null)
+            {
+                return null;
+            }
+            User? user = _DbContext.Users.Find(Id);
+            if (user == null)
+            {
+                return null;
+            }
+            return user;
+        }
         public IActionResult Index()
         {
             // Simplement afficher liste de tous les products du vendeur
-            var Id = GetCurrentUserId();
-            if (Id == null) 
-            {
-                return Unauthorized();
-            }
-            var vendeur = _DbContext.Users.Find(Id);
+            User? vendeur = GetCurrentUser();
             if (vendeur == null) 
             {
-                return NotFound();
+                return Unauthorized();
             }
             if (vendeur.GetType() != typeof(Vendeur)) 
             {
@@ -44,7 +48,7 @@ namespace TravailPratique1.Controllers
                 return View();
             }
             // Filtrer produits pour n'afficher que ceux étant possédés par le vendeur actif
-            var products = _DbContext.Products.Where(product => product.vendeur.userId == vendeur.userId).ToList();
+            var products = _DbContext.Products.Where(product => product.vendeur.Id == vendeur.Id).ToList();
             // Si le vendeur ne possède aucun produit existant
             if (products.Count == 0)
             {
@@ -127,8 +131,15 @@ namespace TravailPratique1.Controllers
 			{
 				return RedirectToAction("Erreur404", "Home"); // IL FAUT RETOURNER ERREUR 404
 			}
-            var Id = GetCurrentUserId();
-            if (Id == null) { }
+            User? user = GetCurrentUser();
+            if (user == null) 
+            {
+                return Unauthorized();
+            }
+            if (user.GetType() == typeof(Client))
+            {
+                // Boutton "Ajouter au panier"
+            }
 			return View(product);
         }
     }

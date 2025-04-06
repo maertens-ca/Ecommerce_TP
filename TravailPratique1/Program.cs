@@ -27,7 +27,7 @@ namespace TravailPratique1
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             // Configure Identity
-            builder.Services.AddIdentity<Models.User, IdentityRole>()
+            builder.Services.AddIdentity<User, UserRole>()
                 .AddEntityFrameworkStores<BoutiqueDbContext>()
                 .AddDefaultTokenProviders();
 
