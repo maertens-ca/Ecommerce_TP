@@ -4,67 +4,180 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6 mx-auto text-center  p-3">
-            <h1>Commandes</h1>
-            <Table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Produits commandés</th>
-                        <th scope="col">Montant</th>
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Ici on créera des lignes de tableau pour chaque entrée trouvée dans la base de données-->
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>2025-03-27</td>
-                        <!-- Pour les produits commandés, n'afficher qu'un ou deux produits pour garder le tableau compact-->
-                        <td>Chandail rouge</td>
-                        <td>530,92$</td>
-                        <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#TestModal">Afficher</button></td>
-                        <!-- Fenêtre modale qui serait générée selon l'id de la commande qui affiche plus de détails sur la commande-->
-                    </tr>
-                </tbody>
-            </Table>
-            <!--Fenêtre modale prototype montrant les informations plus détaillées d'une commande-->
-            <div class="modal fade" id="TestModal" data-bs-keyboard="false" tabindex="-1">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Commande #</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
-                        <div class="modal-body">
-                            <h2>Date: 2025-03-27</h2>
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Nom produit</th>
-                                        <th scope="col">Quantité</th>
-                                        <th scope="col">Coût unitaire</th>
-                                        <th scope="col">Coût total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!--Loop ici pour trouver tous les ProduitCommande-->
-                                    <tr>
-                                        <th scope="row">Chandail rouge</th>
-                                        <td>2</td>
-                                        <td>20$</td>
-                                        <td>40$</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <h2>TOTAL: 40$</h2>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @{
+                if (Model != null)
+                {
+                    if (Model.GetType() == typeof(List<Commande>))
+                    {
+                        <h1>Commandes</h1>
+                    }
+                    else if (Model.GetType() == typeof(List<Facture>)) 
+                    { 
+                        <h1>Factures</h1>
+                    }
+                }
+            }
+            @{
+                if (Model == null)
+                {
+                    <h3>ViewBag.AucunItem</h3>
+                }
+                else
+                {
+                    <Table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Montant</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                if (Model.GetType() == typeof(List<Commande>))
+                                {
+                                    var listeCommandes = Model as List<Commande>;
+                                    // Pas besoin de vérifier si la liste est vide, on a vérifié dans HomeController
+                                    foreach (var commande in listeCommandes)
+                                    {
+                                        <tr>
+                                            <th scope="row">@commande.commandeId</th>
+                                            <td>@commande.date</td>
+                                            @* Montant total de la commande calculé ici *@
+                                            <td>@{
+                                                    double cumulatif = 0;
+                                                    foreach (ProduitCommande pc in commande.produitCommandes)
+                                                    {
+                                                        double price = pc.product.price;
+                                                        cumulatif += (price * pc.quantité);
+                                                    }
+                                            }
+                                            @cumulatif
+                                            </td>
+                                            <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="@("#c"+commande.commandeId)">Afficher</button></td>
+                                            <!-- Fenêtre modale qui serait générée selon l'id de la commande qui affiche plus de détails sur la commande-->
+                                        </tr>
+                                    }
+                                }
+                                else if (Model.GetType() == typeof(List<Facture>))
+                                {
+                                    var listeFactures = Model as List<Facture>;
+                                    // Même principe pour les factures
+                                    foreach (var facture in listeFactures)
+                                    {
+                                        <tr>
+                                            <th scope="row"></th>
+                                            <td>2025-03-27</td>
+                                            <td>530,92$</td>
+                                            <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="@("#f" + facture.factureId)">Afficher</button></td>
+                                            <!-- Fenêtre modale qui serait générée selon l'id de la commande qui affiche plus de détails sur la commande-->
+                                        </tr>
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </Table>
+
+                    <!--Fenêtre modale prototype montrant les informations plus détaillées d'une commande-->
+                    if (Model.GetType() == typeof(List<Commande>))
+                    {
+                        var listeCommandes = Model as List<Commande>;
+                        foreach (var commande in listeCommandes)
+                        {
+                            double cumulatif = 0; // On génère une fenêtre modale pour chaque commande/facture existante. Les id sont générés avec un préfix (C ou F) et le Id correspondant.
+                            <div class="modal fade" id="@("c"+commande.commandeId)" data-bs-keyboard="false" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Commande #@commande.commandeId</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h2>Date: @commande.date</h2>
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Nom produit</th>
+                                                        <th scope="col">Quantité</th>
+                                                        <th scope="col">Coût unitaire</th>
+                                                        <th scope="col">Coût total</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <!--Loop ici pour trouver tous les ProduitCommande-->
+                                                    @foreach (ProduitCommande pc in commande.produitCommandes) 
+                                                    {
+                                                        <tr>
+                                                            <th scope="row">@pc.product.title</th>
+                                                            <td>@pc.quantité</td>
+                                                            <td>@pc.product.price $</td>
+                                                            <td>@((pc.product.price * pc.quantité)+ " $")</td>
+                                                        </tr>
+                                                        cumulatif += (pc.product.price * pc.quantité);
+                                                    }
+                                                </tbody>
+                                            </table>
+                                            <h2>TOTAL: @cumulatif $</h2>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                    } else if (Model.GetType() == typeof(List<Facture>))
+                    {
+                        var listeFactures = Model as List<Facture>;
+                        foreach (var facture in listeFactures)
+                        {
+                            double cumulatif = 0;
+                            <div class="modal fade" id="@("f"+facture.factureId)" data-bs-keyboard="false" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Facture #@facture.factureId</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h2>Date: @facture.date</h2>
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Nom produit</th>
+                                                        <th scope="col">Quantité</th>
+                                                        <th scope="col">Coût unitaire</th>
+                                                        <th scope="col">Coût total</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <!--Loop ici pour trouver tous les ProduitCommande-->
+                                                    @foreach (ProduitCommande pc in facture.commande.produitCommandes)
+                                                    {
+                                                        <tr>
+                                                            <th scope="row">@pc.product.title</th>
+                                                            <td>@pc.quantité</td>
+                                                            <td>@pc.product.price $</td>
+                                                            <td>@((pc.product.price * pc.quantité) + " $")</td>
+                                                        </tr>
+                                                        cumulatif += (pc.product.price * pc.quantité);
+                                                    }
+                                                </tbody>
+                                            </table>
+                                            <h2>TOTAL: @cumulatif $</h2>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+            }
         </div>
     </div>
 </div>

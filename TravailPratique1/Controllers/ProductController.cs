@@ -60,12 +60,32 @@ namespace TravailPratique1.Controllers
         [HttpGet]
         public IActionResult Add() // Sans paramètres = On envoie un formulaire d'ajout de produit
         {
+            User? user = GetCurrentUser();
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+            // seuls les vendeurs peuvent ajouter un produit
+            else if (user.GetType() != typeof(Vendeur))
+            {
+                return Unauthorized();
+            }
             ViewBag.Action = "Add"; 
             return View();
         }
         [HttpPost]
         public IActionResult Add(Product product) // Lorsque le form est rempli
         {
+            User? user = GetCurrentUser();
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+            // seuls les vendeurs peuvent ajouter un produit
+            else if (user.GetType() != typeof(Vendeur)) 
+            {
+                return Unauthorized();
+            }
             if (ModelState.IsValid) 
             {
 				_DbContext.Add(product); 
@@ -78,6 +98,16 @@ namespace TravailPratique1.Controllers
         [HttpGet]
         public IActionResult Edit(int? id) // Layout presque identique au Add, sauf que le formulaire sera rempli avec les informations existantes 
         {
+            User? user = GetCurrentUser();
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+            // seuls les vendeurs peuvent ajouter un produit
+            else if (user.GetType() != typeof(Vendeur))
+            {
+                return Unauthorized();
+            }
             if (id == null) 
             { 
                 return RedirectToAction("Erreur400", "Home"); 
@@ -93,6 +123,16 @@ namespace TravailPratique1.Controllers
         [HttpPost]
         public IActionResult Edit(Product product) // Lorsque le form est rempli
         {
+            User? user = GetCurrentUser();
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+            
+            else if (user.GetType() != typeof(Vendeur))
+            {
+                return Unauthorized();
+            }
             // Logique de EDIT 
             if (ModelState.IsValid) 
             {
@@ -106,6 +146,16 @@ namespace TravailPratique1.Controllers
         [HttpPost]
         public IActionResult Delete(int? id) 
         {
+            User? user = GetCurrentUser();
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+            
+            else if (user.GetType() != typeof(Vendeur))
+            {
+                return Unauthorized();
+            }
             if (id == null) 
             {
                 return RedirectToAction("Erreur400", "Home"); // IL FAUT RETOURNER ERREUR 400
@@ -135,10 +185,6 @@ namespace TravailPratique1.Controllers
             if (user == null) 
             {
                 return Unauthorized();
-            }
-            if (user.GetType() == typeof(Client))
-            {
-                // Boutton "Ajouter au panier"
             }
 			return View(product);
         }

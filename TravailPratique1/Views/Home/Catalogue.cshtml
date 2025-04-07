@@ -42,32 +42,37 @@
                 <button class="btn btn-outline-primary" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
             </div>
         </form>
-        <div class="row gy-5">
-            @foreach (var product in Model)
+        @{
+            if (Model != null) 
             {
-                <div class="col-4">
-                    <div class="card px-1 py-3">
-                        <a href="/Product/Details/@product.productId"><img style="width:90%; height:90%; display:block; margin:auto;" class="card-img-top rounded-3" src=@product.imageUrl/></a>
-                        <br />
-                        <div class="card-body" style="padding-top:0px">
-                            <div class="container">
-                                <div class="row gx-1">
-                                    <div class="col-7">
-                                        <h5 class="card-title">@product.title</h5>
-                                        <p class="card-text">@product.category</p>
-                                        <p class="card-text" style="font-weight:bold; font-size:150%">@product.price $</p>
-                                    </div>
-                                    <div class="col-5 text-center">
-                                        <button type="button" style="margin-bottom:10px;" onclick="location.href='/Product/Details/@product.productId'" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i> Détails</button>
-                                        <button onclick="AjouterAuPanier(@product.productId)" class="btn btn-success"><i class="fa-solid fa-cart-shopping"></i> Ajouter</button>
+                <div class="row gy-5">
+                    @foreach (var product in Model)
+                    {
+                        <div class="col-4">
+                            <div class="card px-1 py-3">
+                                <a href="/Product/Details/@product.productId"><img style="width:90%; height:90%; display:block; margin:auto;" class="card-img-top rounded-3" src=@product.imageUrl /></a>
+                                <br />
+                                <div class="card-body" style="padding-top:0px">
+                                    <div class="container">
+                                        <div class="row gx-1">
+                                            <div class="col-7">
+                                                <h5 class="card-title">@product.title</h5>
+                                                <p class="card-text">@product.category</p>
+                                                <p class="card-text" style="font-weight:bold; font-size:150%">@product.price $</p>
+                                            </div>
+                                            <div class="col-5 text-center">
+                                                <button type="button" style="margin-bottom:10px;" onclick="location.href='/Product/Details/@product.productId'" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i> Détails</button>
+                                                <button onclick="AjouterAuPanier(@product.productId)" class="btn btn-success"><i class="fa-solid fa-cart-shopping"></i> Ajouter</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    }
                 </div>
             }
-        </div>
+        } 
     </div>
 </div>
 
@@ -77,7 +82,7 @@
         $.ajax({
             url: "/AjouterAuPanier",
             type: "POST",
-            data: { productId: productID, quantity: 1},
+            data: { id: productID, quantity: 1, ajax: true},
             success: function(reponse){
                 alert("Article ajouté au panier!"); // Ajouté au panier
             },
