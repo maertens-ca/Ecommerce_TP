@@ -1,0 +1,6 @@
+@TP2_GateWay_HostAddress = http://localhost:5022
+
+GET {{TP2_GateWay_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
