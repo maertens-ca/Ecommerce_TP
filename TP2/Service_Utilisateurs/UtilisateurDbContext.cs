@@ -1,0 +1,24 @@
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace Service_Utilisateurs
+{
+    public class UtilisateurDbContext : DbContext
+    {
+
+        public DbSet<Models.Client> Clients { get; set; }
+        public DbSet<Models.Vendeur> Vendeurs { get; set; }
+
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            string connection_string = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
+            string database_name = "UtilisateursDb";
+            optionsBuilder.UseSqlServer($"{connection_string};Database={database_name};");
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Models.Client>().ToTable("Client");
+            modelBuilder.Entity<Models.Vendeur>().ToTable("Vendeur");
+        }
+    }
+}
