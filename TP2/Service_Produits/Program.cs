@@ -1,7 +1,11 @@
+using Service_Produits;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddSwaggerGen();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddControllers();
 
 
 
@@ -11,11 +15,19 @@ var app = builder.Build();
 
 if(app.Environment.IsDevelopment())
 {
+    app.UseRouting();
     app.UseSwagger();
     app.UseSwaggerUI(config => config.SwaggerEndpoint("/swagger/v1/swagger.json", "Service Produits API"));
+    app.UseEndpoints(endpoints =>
+    {
+        endpoints.MapControllers();
+    });
 }
 
 
 
 app.Run();
+
+//Ajout Manuel produit
+ProduitDbContext db = new ProduitDbContext();
 
