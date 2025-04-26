@@ -1,3 +1,18 @@
 {
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/produits/{everything}",
+      "DownstreamScheme": "http",
+      "SwaggerKey": "produits",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5002
+        }
+      ],
+      "UpstreamPathTemplate": "/api/produits/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+    }
+  ]
 
 }

@@ -1,3 +1,18 @@
 {
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/utilisateurs/{everything}",
+      "DownstreamScheme": "http",
+      "SwaggerKey": "utilisateurs",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ],
+      "UpstreamPathTemplate": "/api/utilisateurs/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+    }
+  ]
 
 }
