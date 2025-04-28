@@ -44,5 +44,126 @@ namespace Service_Produits.Controllers
             catch (Exception) { }
             return StatusCode((int)HttpStatusCode.BadRequest);
         }
+
+        [HttpGet]
+        public async Task<ActionResult<Produit>> GetProduits()
+        {
+            try
+            {
+                List<Produit> produits = _context.Produits.ToList();
+                if (produits != null)
+                {
+                    return Ok(produits);
+                }
+                else
+                {
+                    return NotFound($"Auncun Produits trouvé.");
+                }
+            }
+            catch (Exception) { }
+            return StatusCode((int)HttpStatusCode.BadRequest);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(typeof(Produit), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
+        public IActionResult AddProduct(string title, float price, string description, string category, string image)
+        {
+            try
+            {
+                var produit = new Produit(title, price, description, category, image);
+
+                _context.Produits.Add(produit);
+                _context.SaveChanges();
+                return CreatedAtAction(nameof(GetProduitById), new { produitId = produit.Id }, produit);
+            }
+            catch (Exception) { }
+            return StatusCode((int)HttpStatusCode.BadRequest);
+        }
+
+
+        [HttpDelete("{ProductId}")]
+        [ProducesResponseType(typeof(Produit), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public IActionResult DeleteProduct(int ProductId)
+        {
+            try
+            {
+                var produit = _context.Produits.Find(ProductId);
+                if (produit != null)
+                {
+                    _context.Produits.Remove(produit);
+                    _context.SaveChanges();
+                    return Ok($"Produit avec ID {ProductId} supprimé.");
+                }
+                else
+                {
+                    return NotFound($"Produit avec ID {ProductId} non trouvé.");
+                }
+            }
+            catch (Exception) { }
+            return StatusCode((int)HttpStatusCode.BadRequest);
+
+        }
+
+
+        [HttpGet("populate")]
+        [ProducesResponseType(typeof(Produit), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public IActionResult PopulateProducts()
+        {
+            try
+            {
+                var response = _httpClient.GetAsync("https://fakestoreapi.com/products").Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = response.Content.ReadAsStringAsync().Result;
+                    var produits = JsonSerializer.Deserialize<List<Produit>>(json, _options);
+                    if (produits != null)
+                    {
+                        foreach (var produit in produits)
+                        {
+                            _context.Produits.Add(new Produit(produit.title, produit.price, produit.category, produit.description, produit.image));
+                        }
+                        _context.SaveChanges();
+                        return Ok(produits);
+                    }
+                    else
+                    {
+                        return NotFound($"Auncun Produits trouvé.");
+                    }
+                }
+            }
+            catch (Exception) { }
+            return StatusCode((int)HttpStatusCode.BadRequest);
+        }
+
+        [HttpPut("{produitId}")]
+        public async Task<ActionResult<Produit>> UpdateProduit(int produitId, Produit produit)
+        {
+            try
+            {
+                var existingProduit = _context.Produits.Find(produitId);
+                if (existingProduit != null)
+                {
+                    existingProduit.title = produit.title;
+                    existingProduit.price = produit.price;
+                    existingProduit.description = produit.description;
+                    existingProduit.category = produit.category;
+                    existingProduit.image = produit.image;
+                    _context.SaveChanges();
+                    return Ok(existingProduit);
+                }
+                else
+                {
+                    return NotFound($"Produit avec ID {produitId} non trouvé.");
+                }
+            }
+            catch (Exception) { }
+            return StatusCode((int)HttpStatusCode.BadRequest);
+        }
+
     }
 }

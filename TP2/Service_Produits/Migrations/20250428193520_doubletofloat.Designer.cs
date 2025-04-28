@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Service_Produits;
 
@@ -10,9 +11,11 @@ using Service_Produits;
 namespace Service_Produits.Migrations
 {
     [DbContext(typeof(ProduitDbContext))]
-    partial class ProduitDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250428193520_doubletofloat")]
+    partial class doubletofloat
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

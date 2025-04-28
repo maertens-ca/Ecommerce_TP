@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Service_Produits;
 
@@ -10,9 +11,11 @@ using Service_Produits;
 namespace Service_Produits.Migrations
 {
     [DbContext(typeof(ProduitDbContext))]
-    partial class ProduitDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250428160434_initProduit")]
+    partial class initProduit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,8 +44,8 @@ namespace Service_Produits.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("price")
-                        .HasColumnType("real");
+                    b.Property<double>("price")
+                        .HasColumnType("float");
 
                     b.Property<string>("title")
                         .IsRequired()
