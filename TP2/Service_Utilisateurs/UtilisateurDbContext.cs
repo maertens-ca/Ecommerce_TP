@@ -5,8 +5,7 @@ namespace Service_Utilisateurs
     public class UtilisateurDbContext : DbContext
     {
 
-        public DbSet<Models.Client> Clients { get; set; }
-        public DbSet<Models.Vendeur> Vendeurs { get; set; }
+        public DbSet<Models.Utilisateur> Utilisateurs { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -17,8 +16,7 @@ namespace Service_Utilisateurs
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Models.Client>().ToTable("Client");
-            modelBuilder.Entity<Models.Vendeur>().ToTable("Vendeur");
+            modelBuilder.Entity<Models.Utilisateur>().ToTable("Utilisateurs");
         }
     }
 }

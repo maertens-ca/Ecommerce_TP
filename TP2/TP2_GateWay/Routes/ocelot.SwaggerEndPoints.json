@@ -1,6 +1,17 @@
 {
   "SwaggerEndPoints": [
     {
+      "Key": "utilisateurs",
+      "TransformByOcelotConfig": true,
+      "Config": [
+        {
+          "Name": "Service Utilisateurs API",
+          "Version": "v1",
+          "Url": "http://localhost:5001/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
       "Key": "produits",
       "TransformByOcelotConfig": true,
       "Config": [
