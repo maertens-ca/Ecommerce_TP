@@ -21,6 +21,17 @@
           "Url": "http://localhost:5002/swagger/v1/swagger.json"
         }
       ]
+    },
+    {
+      "Key": "paiement",
+      "TransformByOcelotConfig": true,
+      "Config": [
+        {
+          "Name": "Service Paiments API",
+          "Version": "v1",
+          "Url": "http://localhost:5002/swagger/v1/swagger.json"
+        }
+      ]
     }
 
   ]

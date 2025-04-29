@@ -1,3 +1,19 @@
 {
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/paiement/{everything}",
+      "DownstreamScheme": "http",
+      "SwaggerKey": "paiement",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "UpstreamPathTemplate": "/api/paiement/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+    }
+
+  ]
 
 }
