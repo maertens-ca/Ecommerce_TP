@@ -8,13 +8,13 @@ namespace Service_Utilisateurs.Controllers
     [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
-    public class UtilisateurController : ControllerBase
+    public class UtilisateursController : ControllerBase
     {
         private HttpClient _httpClient;
         private JsonSerializerOptions _options;
         private UtilisateurDbContext _context;
 
-        public UtilisateurController()
+        public UtilisateursController()
         {
             _context = new UtilisateurDbContext();
             _httpClient = new HttpClient();
@@ -72,7 +72,7 @@ namespace Service_Utilisateurs.Controllers
         {
             try
             {
-                if(!utilisateur.Role.Equals("vendeur") || !utilisateur.Role.Equals("client"))
+                if(!(utilisateur.Role.Equals("vendeur") || utilisateur.Role.Equals("client")))
                 {
                     return BadRequest("Role doit être vendeur ou client");
                 }
@@ -90,7 +90,7 @@ namespace Service_Utilisateurs.Controllers
             catch (Exception) { }
             return StatusCode((int)HttpStatusCode.BadRequest);
         }
-
+        
         [HttpGet("populate")]
         [ProducesResponseType(typeof(Utilisateur), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
@@ -117,6 +117,62 @@ namespace Service_Utilisateurs.Controllers
                     {
                         return NotFound($"Auncun Utilisateurs trouvé.");
                     }
+                }
+            }
+            catch (Exception) { }
+            return StatusCode((int)HttpStatusCode.BadRequest);
+        }
+
+        [HttpDelete("{utilisateurId}")]
+        [ProducesResponseType(typeof(Models.Utilisateur), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<ActionResult<Models.Utilisateur>> DeleteUtilisateur(int utilisateurId)
+        {
+            try
+            {
+                var utilisateur = _context.Utilisateurs.Find(utilisateurId);
+                if (utilisateur != null)
+                {
+                    _context.Utilisateurs.Remove(utilisateur);
+                    _context.SaveChanges();
+                    return Ok($"Utilisateur avec ID {utilisateurId} supprimé.");
+                }
+                else
+                {
+                    return NotFound($"Utilisateur avec ID {utilisateurId} non trouvé.");
+                }
+            }
+            catch (Exception) { }
+            return StatusCode((int)HttpStatusCode.BadRequest);
+        }
+
+        [HttpPut("{utilisateurId}")]
+        [ProducesResponseType(typeof(Models.Utilisateur), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<ActionResult<Models.Utilisateur>> PutUtilisateur(int utilisateurId, [FromBody] Models.Utilisateur utilisateur)
+        {
+            try
+            {
+                var existingUtilisateur = _context.Utilisateurs.Find(utilisateurId);
+                if (!(utilisateur.Role.Equals("vendeur") || utilisateur.Role.Equals("client")))
+                {
+                    return BadRequest("Role doit être vendeur ou client");
+                }
+                else if (existingUtilisateur != null)
+                {
+                    existingUtilisateur.Username = utilisateur.Username;
+                    existingUtilisateur.Nom = utilisateur.Nom;
+                    existingUtilisateur.Prenom = utilisateur.Prenom;
+                    existingUtilisateur.Email = utilisateur.Email;
+                    existingUtilisateur.Role = utilisateur.Role;
+                    _context.SaveChanges();
+                    return Ok(existingUtilisateur);
+                }
+                else
+                {
+                    return NotFound($"Utilisateur avec ID {utilisateurId} non trouvé.");
                 }
             }
             catch (Exception) { }

@@ -19,11 +19,13 @@ builder.Services.AddOcelot(builder.Configuration);
 builder.Services.AddSwaggerForOcelot(builder.Configuration);
 
 
+builder.Services.AddCors();
 
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseCors(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 app.UseSwagger();
 app.UseSwaggerForOcelotUI(options =>
 {

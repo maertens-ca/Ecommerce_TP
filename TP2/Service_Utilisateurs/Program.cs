@@ -30,5 +30,5 @@ app.UseEndpoints(endpoints =>
 app.Run();
 
 //Ajout Manuel produit
-UtilisateurDbContext db = new UtilisateurDbContext();
+
 

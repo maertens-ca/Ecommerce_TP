@@ -29,5 +29,5 @@ if(app.Environment.IsDevelopment())
 app.Run();
 
 //Ajout Manuel produit
-ProduitDbContext db = new ProduitDbContext();
+
 
