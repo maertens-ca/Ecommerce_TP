@@ -72,8 +72,5 @@ namespace Service_Panier.Controllers
             catch (Exception) { }
             return StatusCode((int)HttpStatusCode.BadRequest);
         }
-
-        [HttpPatch]
-        public async Task<IActionResult>  
     }
 }

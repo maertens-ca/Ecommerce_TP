@@ -5,6 +5,7 @@ namespace Service_Panier
     public class PanierDbContext : DbContext
     {
         public DbSet<Models.Panier> Paniers { get; set; }
+        public DbSet<Models.ItemPanier> ItemsPanier { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -15,6 +16,7 @@ namespace Service_Panier
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Models.Panier>().ToTable("Panier");
+            modelBuilder.Entity<Models.ItemPanier>().ToTable("ItemPaniers");
         }
     }
 }
