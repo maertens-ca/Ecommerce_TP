@@ -4,7 +4,7 @@ namespace Service_Commandes
 {
     public class CommandesDbContext : DbContext
     {
-        public DbSet<Models.Commandes> Commandes { get; set; }
+        public DbSet<Models.Commande> Commandes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -14,7 +14,7 @@ namespace Service_Commandes
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Models.Commandes>().ToTable("Panier");
+            modelBuilder.Entity<Models.Commande>().ToTable("Panier");
         }
     }
 }

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Service_Panier.Models;
 using System.Net;
 using System.Text.Json;
@@ -8,7 +9,7 @@ namespace Service_Panier.Controllers
     [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
-    public class PanierController : BaseController
+    public class PanierController : ControllerBase
     {
         private HttpClient _httpClient;
         private JsonSerializerOptions _options;
@@ -35,7 +36,7 @@ namespace Service_Panier.Controllers
                     // Recuperer info sur user si son role est client ou vendeur
                     //string responseContent = await response.Content.ReadAsStringAsync();
 
-                    var panier = await _context.Panier.Where(panier => panier.UserId == userId);
+                    var panier = await _context.Paniers.FirstOrDefaultAsync(panier => panier.userId == userId);
                     if (panier == null) // si pas de panier existant pour le user on lui en crée un
                     {
 
@@ -58,13 +59,13 @@ namespace Service_Panier.Controllers
                 HttpResponseMessage response = await _httpClient.GetAsync($"/api/utilisateurs/{userId}");
                 if (response.IsSuccessStatusCode) // Simplement checker si utilisateur existe
                 {
-                    var panier = await _context.Panier.Where(panier => panier.UserId == userId);
+                    var panier = await _context.Paniers.FirstOrDefaultAsync(panier => panier.userId == userId);
                     if (panier != null) // vérifier qu'il n'existe bien pas de panier pour ce user
                     {
                         return BadRequest("Cet utilisateur a déjà un panier");
                     }
                     Panier nouveauPanier = new Panier(userId);
-                    _context.Panier.Add(nouveauPanier);
+                    _context.Paniers.Add(nouveauPanier);
                     _context.SaveChanges();
                     return CreatedAtAction(nameof(GetPanierByUserId), new { userId = nouveauPanier.userId }, nouveauPanier);
                 }

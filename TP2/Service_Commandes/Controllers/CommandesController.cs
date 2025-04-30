@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Service_Produits.Models;
+using Microsoft.EntityFrameworkCore;
+using Service_Commandes.Models;
 using System.Net;
 using System.Text.Json;
 
@@ -8,14 +9,15 @@ namespace Service_Commandes.Controllers
     [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
-    public class CommandesController : BaseController
+    public class CommandesController : ControllerBase
     {
         private HttpClient _httpClient;
         private JsonSerializerOptions _options;
-        private CommandeDbContext _context;
+        private CommandesDbContext _context;
 
         public CommandesController()
         {
+            _context = new CommandesDbContext();
             _httpClient = new HttpClient();
             _options = new JsonSerializerOptions
             {
@@ -23,12 +25,12 @@ namespace Service_Commandes.Controllers
             };
         }
 
-        [HttpGet{"commandeId"}]
+        [HttpGet("{commandeId}")]
         public async Task<ActionResult<Commande>> GetCommandeById(int commandeId) 
         {
         try
         {
-            var produit = _context.Produits.Find(commandeId);
+            var produit = _context.Commandes.Find(commandeId);
             if (produit != null)
             {
                 return Ok(produit);

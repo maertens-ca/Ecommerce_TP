@@ -10,8 +10,6 @@ namespace Service_Panier.Models
         }
     }
 
-
-
     public class ItemPanier
     {
         public int Id { get; set; }

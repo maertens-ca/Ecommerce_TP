@@ -1,4 +1,4 @@
-namespace Services_Comandes.Models
+namespace Service_Commandes.Models
 {
     public class Commande
     {
