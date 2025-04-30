@@ -1,3 +1,18 @@
 {
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/commandes/{everything}",
+      "DownstreamScheme": "http",
+      "SwaggerKey": "commandes",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5002
+        }
+      ],
+      "UpstreamPathTemplate": "/api/commandes/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+    }
+  ]
 
 }
