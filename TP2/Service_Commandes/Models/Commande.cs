@@ -5,12 +5,13 @@ namespace Service_Commandes.Models
         public int Id { get; set; }
         public string date { get; set; } // formattée en string lors de l'initialisation avec DateTime.Now.ToString("yyyy-MM-dd")
         public int clientId { get; set; }
-        public ICollection<ItemCommande> ItemsCommande { get; set; } = new List<ItemCommande>();
+        public ICollection<ItemCommande> ItemsCommande { get; set; } 
 
         public Commande(string date, int clientId) 
         { 
             this.date = date;
             this.clientId = clientId;
+            ItemsCommande = new List<ItemCommande>();
         }
     }
 
