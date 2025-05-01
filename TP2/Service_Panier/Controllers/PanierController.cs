@@ -99,7 +99,7 @@ namespace Service_Panier.Controllers
                         await _context.SaveChangesAsync();
                         return Ok(panier);
                     }
-                    itemPanierExistant.quantite = int.Max(1, itemPanierExistant.quantite + panierItemInfo.quantité);
+                    itemPanierExistant.quantite = int.Max(1, panierItemInfo.quantité);
                     await _context.SaveChangesAsync();
                     return Ok(panier);
                 }
@@ -111,5 +111,42 @@ namespace Service_Panier.Controllers
             catch (Exception) { }
             return StatusCode((int)HttpStatusCode.BadRequest);
         }
+
+        [HttpDelete("Remove/{userId}")]
+        public async Task<IActionResult> RemoveProduitFromPanier([FromBody] PanierItemRemoveDTO panierItemInfo) 
+        {
+            try
+            {
+                // Vérifier que l'utilisateur et le produit existe bien
+                HttpResponseMessage produitResponse = await _httpClient.GetAsync($"/api/produits/{panierItemInfo.produitId}");
+                HttpResponseMessage userResponse = await _httpClient.GetAsync($"/api/utilisateurs/{panierItemInfo.UserId}");
+                if (produitResponse.IsSuccessStatusCode && userResponse.IsSuccessStatusCode)
+                {
+                    var panier = await _context.Paniers.FirstOrDefaultAsync(panier => panier.userId == panierItemInfo.UserId);
+                    if (panier == null)
+                    {
+                        return NotFound("L'utilisateur n'a pas de panier!");
+                    }
+                    var itemPanierExistant = await _context.ItemsPanier.FirstOrDefaultAsync(item => item.produitId == panierItemInfo.produitId);
+                    if (itemPanierExistant == null) // s'il s'agit d'un nouveau item dans le panier et non d'ajouter à un produit existant
+                    {
+                        return NotFound($"Le produit {panierItemInfo.produitId} n'est pas dans le panier de l'utilisateur {panierItemInfo.UserId}!");
+                    }
+                    else 
+                    {
+                        panier.ItemsPanier.Remove(itemPanierExistant);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+                else
+                {
+                    return NotFound("Utilisateur ou produit non trouvé!");
+                }
+            }
+            catch (Exception) { }
+            return StatusCode((int)HttpStatusCode.BadRequest);
+        }
+
+
     }
 }
