@@ -8,7 +8,7 @@ namespace Service_Commandes.Models
         public ICollection<ItemCommande> ItemsCommande { get; set; } = new List<ItemCommande>();
     }
 
-    public class ItemCommande()
+    public class ItemCommande
     {
         public int Id { get; set; }
         public int produitId { get; set; }

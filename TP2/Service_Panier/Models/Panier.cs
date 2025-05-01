@@ -3,9 +3,9 @@ namespace Service_Panier.Models
     public class Panier
     {
         public int Id { get; set; }
-        public int userId { get; set; }
+        public int userId { get; set; } // Note: Le userId sert également de clé primaire
         public ICollection<ItemPanier> ItemsPanier { get; set; } = new List<ItemPanier>();
-        public Panier(int userId) { 
+        public Panier(int userId) {
             this.userId = userId;
         }
     }

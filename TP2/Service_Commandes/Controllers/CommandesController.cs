@@ -30,10 +30,10 @@ namespace Service_Commandes.Controllers
         {
         try
         {
-            var produit = _context.Commandes.Find(commandeId);
-            if (produit != null)
+            var commande = await _context.Commandes.FindAsync(commandeId);
+            if (commande != null)
             {
-                return Ok(produit);
+                return Ok(commande);
             }
             else
             {

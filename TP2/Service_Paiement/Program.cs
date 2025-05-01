@@ -1,4 +1,4 @@
-
+using Service_Paiement.Models;
 using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
