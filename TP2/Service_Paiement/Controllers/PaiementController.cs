@@ -20,7 +20,7 @@ namespace Service_Paiement.Controllers
 
 
         [HttpPost]
-        public IActionResult Charge(string stripeToken)
+        public async Task<IActionResult> Charge(string stripeToken)
         {
             var chargeOptions = new ChargeCreateOptions
             {

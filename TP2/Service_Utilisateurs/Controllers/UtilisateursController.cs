@@ -31,7 +31,7 @@ namespace Service_Utilisateurs.Controllers
         {
             try
             {
-                var utilisateur = _context.Utilisateurs.Find(utilisateurId);
+                var utilisateur = await _context.Utilisateurs.FindAsync(utilisateurId);
                 if (utilisateur != null)
                 {
                     return Ok(utilisateur);
@@ -78,7 +78,7 @@ namespace Service_Utilisateurs.Controllers
                 }
                 else if (utilisateur != null)
                 {
-                    _context.Utilisateurs.Add(new Utilisateur(utilisateur.Username, utilisateur.Nom, utilisateur.Prenom, utilisateur.Email, utilisateur.Role));
+                   await _context.Utilisateurs.AddAsync(new Utilisateur(utilisateur.Username, utilisateur.Nom, utilisateur.Prenom, utilisateur.Email, utilisateur.Role));
                     _context.SaveChanges();
                     return CreatedAtAction(nameof(GetUtilisateurById), new { utilisateurId = utilisateur.Id }, utilisateur);
                 }

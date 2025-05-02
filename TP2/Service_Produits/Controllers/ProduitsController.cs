@@ -31,7 +31,7 @@ namespace Service_Produits.Controllers
         {
             try
             {
-                var produit = _context.Produits.Find(produitId);
+                var produit = await _context.Produits.FindAsync(produitId);
                 if (produit != null)
                 {
                     return Ok(produit);
@@ -67,13 +67,13 @@ namespace Service_Produits.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(Produit), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.Created)]
-        public IActionResult AddProduct(string title, float price, string description, string category, string image)
+        public async Task<IActionResult> AddProductAsync(string title, float price, string description, string category, string image)
         {
             try
             {
                 var produit = new Produit(title, price, description, category, image);
 
-                _context.Produits.Add(produit);
+                await _context.Produits.AddAsync(produit);
                 _context.SaveChanges();
                 return CreatedAtAction(nameof(GetProduitById), new { produitId = produit.Id }, produit);
             }
@@ -86,14 +86,14 @@ namespace Service_Produits.Controllers
         [ProducesResponseType(typeof(Produit), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        public IActionResult DeleteProduct(int ProductId)
+        public async Task<IActionResult> DeleteProductAsync(int ProductId)
         {
             try
             {
                 var produit = _context.Produits.Find(ProductId);
                 if (produit != null)
                 {
-                    _context.Produits.Remove(produit);
+                     _context.Produits.Remove(produit);
                     _context.SaveChanges();
                     return Ok($"Produit avec ID {ProductId} supprimé.");
                 }
@@ -112,7 +112,7 @@ namespace Service_Produits.Controllers
         [ProducesResponseType(typeof(Produit), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        public IActionResult PopulateProducts()
+        public async Task<IActionResult> PopulateProductsAsync()
         {
             try
             {
@@ -125,7 +125,7 @@ namespace Service_Produits.Controllers
                     {
                         foreach (var produit in produits)
                         {
-                            _context.Produits.Add(new Produit(produit.title, produit.price, produit.category, produit.description, produit.image));
+                             await _context.Produits.AddAsync(new Produit(produit.title, produit.price, produit.category, produit.description, produit.image));
                         }
                         _context.SaveChanges();
                         return Ok(produits);
@@ -145,7 +145,7 @@ namespace Service_Produits.Controllers
         {
             try
             {
-                var existingProduit = _context.Produits.Find(produitId);
+                var existingProduit = await _context.Produits.FindAsync(produitId);
                 if (existingProduit != null)
                 {
                     existingProduit.title = produit.title;
