@@ -95,5 +95,25 @@ namespace Service_Commandes.Controllers
             catch (Exception) { }
             return StatusCode((int)HttpStatusCode.BadRequest);
         }
+
+        [HttpDelete("{commandeId}")]
+        public async Task<IActionResult> DeleteCommande(int commandeId) 
+        {
+            try
+            {
+                var commande = await _context.Commandes.FindAsync(commandeId);
+                if (commande != null)
+                {
+                    _context.Commandes.Remove(commande);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    return NotFound($"Commande avec ID {commandeId} non trouvée.");
+                }
+            }
+            catch (Exception) { }
+            return StatusCode((int)HttpStatusCode.BadRequest);
+        }
     }
 }

@@ -77,7 +77,7 @@ namespace Service_Panier.Controllers
             return StatusCode((int)HttpStatusCode.BadRequest);
         }
         [HttpPatch("UpdateQuantity/{userId}")]
-        public async Task<IActionResult> SetProduitToPanier([FromBody] PanierItemDTO panierItemInfo) 
+        public async Task<IActionResult> SetProduitToPanier([FromBody] PanierItemDTO panierItemInfo)
         {
             try
             {
@@ -87,11 +87,11 @@ namespace Service_Panier.Controllers
                 if (produitResponse.IsSuccessStatusCode && userResponse.IsSuccessStatusCode)
                 {
                     var panier = await _context.Paniers.FirstOrDefaultAsync(panier => panier.userId == panierItemInfo.UserId);
-                    if (panier == null) 
+                    if (panier == null)
                     {
                         return NotFound("L'utilisateur n'a pas de panier!");
                     }
-                    var itemPanierExistant = await _context.ItemsPanier.FirstOrDefaultAsync(item => item.produitId ==  panierItemInfo.produitId);
+                    var itemPanierExistant = await _context.ItemsPanier.FirstOrDefaultAsync(item => item.produitId == panierItemInfo.produitId);
                     if (itemPanierExistant == null) // s'il s'agit d'un nouveau item dans le panier et non d'ajouter à un produit existant
                     {
                         ItemPanier itemPanier = new ItemPanier(panierItemInfo.produitId, int.Max(1, panierItemInfo.quantité)); // pour éviter une quantité de base négative
@@ -103,7 +103,7 @@ namespace Service_Panier.Controllers
                     await _context.SaveChangesAsync();
                     return Ok(panier);
                 }
-                else 
+                else
                 {
                     return NotFound("Utilisateur ou produit non trouvé!");
                 }
@@ -113,7 +113,7 @@ namespace Service_Panier.Controllers
         }
 
         [HttpDelete("Remove/{userId}")]
-        public async Task<IActionResult> RemoveProduitFromPanier([FromBody] PanierItemRemoveDTO panierItemInfo) 
+        public async Task<IActionResult> RemoveProduitFromPanier([FromBody] PanierItemRemoveDTO panierItemInfo)
         {
             try
             {
@@ -132,7 +132,7 @@ namespace Service_Panier.Controllers
                     {
                         return NotFound($"Le produit {panierItemInfo.produitId} n'est pas dans le panier de l'utilisateur {panierItemInfo.UserId}!");
                     }
-                    else 
+                    else
                     {
                         panier.ItemsPanier.Remove(itemPanierExistant);
                         await _context.SaveChangesAsync();
@@ -147,6 +147,34 @@ namespace Service_Panier.Controllers
             return StatusCode((int)HttpStatusCode.BadRequest);
         }
 
+        [HttpDelete("Clear/{userId}")]
+        public async Task<IActionResult> ClearPanier(int userId) 
+        {
+            try
+            {
+                HttpResponseMessage userResponse = await _httpClient.GetAsync($"/api/utilisateurs/{userId}");
+                if (userResponse.IsSuccessStatusCode) 
+                {
+                    var panier = await _context.Paniers.FirstOrDefaultAsync(panier => panier.userId == userId);
+                    if (panier == null)
+                    {
+                        return NotFound("L'utilisateur n'a pas de panier!");
+                    }
+                    var itemPanierExistants = await _context.ItemsPanier.ToListAsync();
+                    if (itemPanierExistants == null || itemPanierExistants.Count == 0) // s'il s'agit d'un nouveau item dans le panier et non d'ajouter à un produit existant
+                    {
+                        return NotFound($"Panier deja vide!");
+                    }
+                    else
+                    {
+                        panier.ItemsPanier.Clear();
+                        await _context.SaveChangesAsync();
+                    }
+                }
+            }
+            catch (Exception ){ }
+            return StatusCode((int)HttpStatusCode.BadRequest);
+        }
 
     }
 }
